@@ -13,11 +13,11 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 preProcessing = PreProcessing(Image=[], ImageLabel=[]) # We should pass Image data as parameters
 
-ImageData, ImageLabel = preProcessing.preProcessing()
+[ImageData, ImageLabel] = preProcessing.preProcessing()
 
 [BATCH_SIZE, EPOCHS_PRIOR, LEARNING_RATE, NUM_CLASSES,  KEEP_PROPABILITY, INPUTE_SIZE] = Prior_HyperParameters()
 
-def SPLIT_POINTS(ImageData:list): # The Split point to split train and validation datas.
+def SPLIT_POINTS(ImageData:list): # We have used Split point to split train and validation datas. (it has been used to update weights twice in every iteration)
     VALIDATION_SPLIT_POINTS = int(len(ImageData)/2)
     return VALIDATION_SPLIT_POINTS
 

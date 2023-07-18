@@ -20,5 +20,5 @@ class PreProcessing:
         
         self.ImageLabel = torch.tensor(self.ImageLabel)
         
-        return self.Image, self.ImageLabel
+        return [self.Image, self.ImageLabel]
     
