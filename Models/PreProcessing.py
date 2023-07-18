@@ -1,24 +1,16 @@
 #import libraries
 import torch
 import numpy as np
-class PriorModel:
+
+
+class PreProcessing:
     
-    def __init__(self,epochs:int, batch_size:int, Image:list, ImageLabel:list):
-        self.epochs = epochs
-        self.batch_size = batch_size
+    def __init__ (self,Image:list, ImageLabel:list):
         self.Image = Image
         self.ImageLabel = ImageLabel
-        self.X, self.y = self.PreProcessing()
-        
-    def Build(self, ModelStructure, resnetModel, baselineModel):
-        self.ModelStructure = ModelStructure
-        self.resnetModel = resnetModel
-        self.baselineModel = baselineModel
-        self.PModel = self.ModelStructure(resnet=resnetModel, net=baselineModel)
-        
-        return self.PModel
     
-    def PreProcessing(self):
+        
+    def preProcessing(self):
         #It depends on your dataset, But we have done this before fit the model:
         self.Image = np.array(self.Image)
         self.Image = self.Image.astype('float32') 
@@ -30,7 +22,3 @@ class PriorModel:
         
         return self.Image, self.ImageLabel
     
-    def getData(self):
-        
-        return self.X, self.y
-        

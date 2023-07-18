@@ -1,24 +1,24 @@
 #Import Libraries
 import torch.nn as nn
 
-class ModelStructure(nn.Module):
-    def __init__(self , resnetType, net):
-        super(ModelStructure, self).__init__()
-        self.resnet_layer = resnetType
-        self.baselineModel = net
+class Model(nn.Module):
+    def __init__(self , Feature_Extraction, Classifier):
+        super(Model, self).__init__()
+        self.Feature_Extraction = Feature_Extraction
+        self.Classifier = Classifier
 
 
     def forward(self, x):
-        x = self.resnet_layer(x)
-        x = self.baselineModel(x)
+        x = self.Feature_Extraction(x)
+        x = self.Classifier(x)
 
         return x
 
 
-class BaselineModel(nn.Module):
+class Classifier(nn.Module):
     def __init__(self, num_classes, keep_probability, inputsize):
 
-        super(BaselineModel, self).__init__()
+        super(Classifier, self).__init__()
         self.fc1 = nn.Linear(inputsize, 1024)
         self.bn1 = nn.BatchNorm1d(1024)
         self.drop_prob = (1 - keep_probability)
