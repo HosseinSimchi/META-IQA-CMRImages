@@ -6,10 +6,10 @@
 
 ![Model.png](./Image/Model.png)
 
-#### Training ( Prior Model)
+#### Training ( Prior Model )
 
 Then, run `main.py`
 
-#### Evaluation ( Fine Tune Model)
+#### Evaluation ( Fine Tune Model )
  
 Then, run `evaluation.py`
