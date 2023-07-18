@@ -2,7 +2,7 @@ def Prior_HyperParameters() :
     BATCH_SIZE = 64
     EPOCHS_PRIOR = 30
     LEARNING_RATE = 1e-4
-    NUM_CLASSES = 2 or 3 #it depends on the number of classes
+    NUM_CLASSES = 3 or 4 #it depends on the number of classes
     KEEP_PROPABILITY = 0.5
     INPUTE_SIZE = 1000,
     
