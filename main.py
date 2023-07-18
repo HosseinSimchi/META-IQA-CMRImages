@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision import models
 from Models.PreProcessing import PreProcessing
-from Models import HyperParametrs
+from Models.HyperParametrs import Prior_HyperParameters
 from Models.ModelStructures import Model, Classifier
 
 ################################ SET GPU OR CPU #################################
@@ -15,7 +15,7 @@ preProcessing = PreProcessing(Image=[], ImageLabel=[]) # We should pass Image da
 
 ImageData, ImageLabel = preProcessing.preProcessing()
 
-BATCH_SIZE, EPOCHS_PRIOR, LEARNING_RATE, NUM_CLASSES,  KEEP_PROPABILITY, INPUTE_SIZE = HyperParametrs.Prior_HyperParameters()
+[BATCH_SIZE, EPOCHS_PRIOR, LEARNING_RATE, NUM_CLASSES,  KEEP_PROPABILITY, INPUTE_SIZE] = Prior_HyperParameters()
 
 def SPLIT_POINTS(ImageData:list): # The Split point to split train and validation datas.
     VALIDATION_SPLIT_POINTS = int(len(ImageData)/2)
