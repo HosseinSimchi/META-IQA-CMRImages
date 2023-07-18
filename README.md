@@ -4,4 +4,4 @@
 #### Network Structure
 
 
-![7-Figure1-1.png](https://d3i71xaburhd42.cloudfront.net/80200cfc6f00a95835a4c3fbaef28b0774b5c6da/7-Figure1-1.png)
+![7-Figure1-1.md.png](https://d3i71xaburhd42.cloudfront.net/80200cfc6f00a95835a4c3fbaef28b0774b5c6da/7-Figure1-1.md.png)
