@@ -11,7 +11,7 @@ class PreProcessing:
     
         
     def preProcessing(self):
-        #It depends on your dataset, But we have done this before fit the model:
+        #It depends on your dataset, But we have done this before fitting the model:
         self.Image = np.array(self.Image)
         self.Image = self.Image.astype('float32') 
         self.Image = self.Image.reshape((self.Image.shape[0], 1, 90, 90)) #reshaped to (90,90) images

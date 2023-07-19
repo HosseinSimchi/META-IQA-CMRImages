@@ -2,31 +2,24 @@ def Prior_HyperParameters() :
     BATCH_SIZE = 64
     EPOCHS_PRIOR = 30
     LEARNING_RATE = 1e-4
-    NUM_CLASSES = 3 or 4 #it depends on the number of classes
+    NUM_CLASSES = 5 
     KEEP_PROPABILITY = 0.5
-    INPUTE_SIZE = 1000,
+    INPUTE_SIZE = 1000, #The default output of Rosenet18 network
     
     return [BATCH_SIZE, EPOCHS_PRIOR, LEARNING_RATE, NUM_CLASSES,  KEEP_PROPABILITY, INPUTE_SIZE]
     
     
 def FineTune_HyperParameters() :
-    TERMINATION_CONDITION_COUNTER = 0
     
-    
-    # If we have two classes in the FineTune set, then :
-    
-    MODE1_64_TwoClasses = [x for x in range(0, 10240 , 64)]
-    MODE2_128_TwoClasses = [x for x in range(0, 20480 , 128)]
-    MODE3_256_TwoClasses = [x for x in range(0, 40960, 256)]
-    
-    # If we have three classes in the FineTune set, then :
-    MODE1_64_ThreeClasses = [x for x in range(0, 10176, 64)]
-    MODE2_128_ThreeClasses = [x for x in range(0, 20352, 128)]
-    MODE3_256_ThreeClasses = [x for x in range(0, 40192, 256)]
-    
-    
+    NUMBER_OF_FOLDS = 160;
+    Fold_Number_Counter = 1
+    Start_Point_traindata = 0
     EPOCHS_FINETUNE = 500;
-    TERMINATION_CONDITIONS = [10, 8, 6, 4, 3.5, 3, 2.5, 2, 1.5]
-    LEARNING_RATE = 1e-4 
     
-    return [TERMINATION_CONDITION_COUNTER, MODE1_64_TwoClasses, MODE2_128_TwoClasses, MODE3_256_TwoClasses, MODE1_64_ThreeClasses, MODE2_128_ThreeClasses, MODE3_256_ThreeClasses, EPOCHS_FINETUNE, TERMINATION_CONDITIONS, LEARNING_RATE]
+
+    TERMINATION_CONDITIONS = [10, 8, 6, 4, 3.5, 3, 2.5, 2, 1.5] #These numbers are determined based on the GridSearch algorithm. (As we know, this algorithm initially takes long steps to determine the value of hyperparameters and takes shorter steps over time. For this reason, the distance of 2 is selected at first, and the closer the error value is to we reach zero, we reduce the distance to 0.5)
+    
+    LEARNING_RATE = 1e-4 
+    Average_Accuracy_AllFolds, Average_Precision_AllFolds, Average_Recall_AllFolds, Average_F1Score_AllFolds = [], [], [], []
+    
+    return [Start_Point_traindata,Average_Accuracy_AllFolds, Average_Precision_AllFolds, Average_Recall_AllFolds, Average_F1Score_AllFolds,EPOCHS_FINETUNE, TERMINATION_CONDITIONS, LEARNING_RATE, NUMBER_OF_FOLDS, Fold_Number_Counter]
