@@ -1,10 +1,12 @@
 # Import Libraries 
 import torch
+import numpy as np
 import torch.nn as nn
 import torch.optim as optim
 from Models.PreProcessing import PreProcessing
 from Metrics.metrics import Metrics
 from Models.HyperParametrs import FineTune_HyperParameters
+from Models.ModelStructures import OutPut
 ################################ SET GPU OR CPU #################################
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 ################################ PREPROCESSING #################################
@@ -21,7 +23,7 @@ Accuracy, Precision, Recall = Metrics()
 
 #Now, we should decide which Modes we want to use it to Train the Model, For example:
 BATCH_SIZE = 64 #64, 128 or 256
-
+NUMBER_OF_CLASSES = 2 #It depends on the number of classes that you want to test.
 for _ in range(NUMBER_OF_FOLDS):
     
     # To store Metrics per fold
@@ -34,7 +36,9 @@ for _ in range(NUMBER_OF_FOLDS):
 
         Save_Error_Earlystopping = []
         PriorModel = torch.load('./PriorModel.pt') #load the trained model ( Prior Knowledge Model ) 
-        Optimizer = optim.Adam(PriorModel.parameters(), lr=LEARNING_RATE)
+        Output_FinetuneModel = OutPut(NUMBER_OF_CLASSES).to(DEVICE)
+        PARAMS = list(PriorModel.parameters()) + list(Output_FinetuneModel.parameters()) 
+        Optimizer = optim.Adam(PARAMS, lr=LEARNING_RATE)
         Criterion = nn.CrossEntropyLoss()
         
         for epoch in range(EPOCHS_FINETUNE):
@@ -45,7 +49,8 @@ for _ in range(NUMBER_OF_FOLDS):
 
             Optimizer.zero_grad()
             Model_Outputs = PriorModel(Image_Finetune_data)
-            Model_Loss = Criterion(Model_Outputs, Image_Finetune_Labeldata)
+            OUTPUT_Predictions = Output_FinetuneModel(Model_Outputs)
+            Model_Loss = Criterion(OUTPUT_Predictions, Image_Finetune_Labeldata)
             Model_Loss.backward()
             Optimizer.step()
             
@@ -75,7 +80,8 @@ for _ in range(NUMBER_OF_FOLDS):
         if Fold_Number_Counter != 1: # Except for the first fold
             
             Model_Predicted = PriorModel(Image_Finetune_data[0 : Start_Point_traindata].to(DEVICE))
-            predicted = torch.argmax(Model_Predicted, 1)
+            OUTPUT_Test_Predictions = Output_FinetuneModel(Model_Predicted)
+            predicted = torch.argmax(OUTPUT_Test_Predictions, 1)
 
             Predictions_First_Part = [predicted[i].item() for i in range(len(predicted))]
             TrueLabel_First_Part = [Image_Finetune_Labeldata[i] for i in range(0 , Start_Point_traindata)]
@@ -85,7 +91,8 @@ for _ in range(NUMBER_OF_FOLDS):
         if Fold_Number_Counter != NUMBER_OF_FOLDS: # Except for the last fold
 
             Model_Predicted = PriorModel(Image_Finetune_data[End_Point_traindata:].to(DEVICE))
-            predicted = torch.argmax(Model_Predicted, 1)
+            OUTPUT_Test_Predictions = Output_FinetuneModel(Model_Predicted)
+            predicted = torch.argmax(OUTPUT_Test_Predictions, 1)
             
             Predictions_Second_Part = [predicted[i].item() for i in range(len(predicted))]
             TrueLabel_Second_Part = [Image_Finetune_Labeldata[i] for i in range(End_Point_traindata, len(Image_Finetune_data))]
@@ -124,8 +131,18 @@ for _ in range(NUMBER_OF_FOLDS):
     
 
 
+#ACCURACY
+print("Average Accuracy is obtained from all tested folds {0}".format((sum(Average_Accuracy_AllFolds)) / NUMBER_OF_FOLDS))
+print("The STD of Accuracy is obtained from all tested folds {0}".format(np.std(Average_Accuracy_AllFolds)))
 
-print("Average Accuracy obtained from all tested folds {0}".format((sum(Average_Accuracy_AllFolds)) / NUMBER_OF_FOLDS))
-print("Average Precision obtained from all tested folds {0}".format((sum(Average_Precision_AllFolds)) / NUMBER_OF_FOLDS))
-print("Average Recall obtained from all tested folds {0}".format((sum(Average_Recall_AllFolds)) / NUMBER_OF_FOLDS))
-print("Average F1-Score obtained from all tested folds {0}".format((sum(Average_F1Score_AllFolds)) / NUMBER_OF_FOLDS))
+#PRECISION
+print("Average Precision is obtained from all tested folds {0}".format((sum(Average_Precision_AllFolds)) / NUMBER_OF_FOLDS))
+print("The STD of Precision is obtained from all tested folds {0}".format(np.std(Average_Precision_AllFolds)))
+
+#RECALL
+print("Average Recall is obtained from all tested folds {0}".format((sum(Average_Recall_AllFolds)) / NUMBER_OF_FOLDS))
+print("The STD of Recall is obtained from all tested folds {0}".format(np.std(Average_Recall_AllFolds)))
+
+#F1-MEASURE
+print("Average F1-Score is obtained from all tested folds {0}".format((sum(Average_F1Score_AllFolds)) / NUMBER_OF_FOLDS))
+print("The STD of F1-Score is obtained from all tested folds {0}".format(np.std(Average_F1Score_AllFolds)))

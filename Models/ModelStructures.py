@@ -28,8 +28,6 @@ class Classifier(nn.Module):
         self.bn2 = nn.BatchNorm1d(512)
         self.relu2 = nn.PReLU()
         self.drop2 = nn.Dropout(p=self.drop_prob)
-        self.fc3 = nn.Linear(512, num_classes)
-        self.sig = nn.LogSoftmax()
 
     def forward(self, x):
 
@@ -42,8 +40,19 @@ class Classifier(nn.Module):
         out = self.bn2(out)
         out = self.relu2(out)
         out = self.drop2(out)
-        out = self.fc3(out)
-        out = self.sig(out)
 
         return out
 
+class OutPut(nn.Module):
+    def __init__(self, num_classes):
+        
+        super(OutPut, self).__init__()
+        self.fc3 = nn.Linear(512, num_classes)
+        self.sig = nn.LogSoftmax()
+
+    def forward(self, x):
+        
+        out = self.fc3(x)
+        out = self.sig(out)
+
+        return out

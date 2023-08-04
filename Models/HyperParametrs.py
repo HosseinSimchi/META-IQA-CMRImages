@@ -2,11 +2,10 @@ def Prior_HyperParameters() :
     BATCH_SIZE = 64
     EPOCHS_PRIOR = 30
     LEARNING_RATE = 1e-4
-    NUM_CLASSES = 5 
     KEEP_PROPABILITY = 0.5
     INPUTE_SIZE = 1000, #The default output of Rosenet18 network
     
-    return [BATCH_SIZE, EPOCHS_PRIOR, LEARNING_RATE, NUM_CLASSES,  KEEP_PROPABILITY, INPUTE_SIZE]
+    return [BATCH_SIZE, EPOCHS_PRIOR, LEARNING_RATE, KEEP_PROPABILITY, INPUTE_SIZE]
     
     
 def FineTune_HyperParameters() :
