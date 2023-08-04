@@ -3,7 +3,7 @@ def Prior_HyperParameters() :
     EPOCHS_PRIOR = 30
     LEARNING_RATE = 1e-4
     KEEP_PROPABILITY = 0.5
-    INPUTE_SIZE = 1000, #The default output of Rosenet18 network
+    INPUTE_SIZE = 1000, #The default output of Resnet18 network
     
     return [BATCH_SIZE, EPOCHS_PRIOR, LEARNING_RATE, KEEP_PROPABILITY, INPUTE_SIZE]
     
